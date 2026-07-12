@@ -306,35 +306,32 @@ Return Answer + Source Citation
 
 # 📸 Application Demo
 
-## 1. Swagger UI
+### 1. Streamlit User Interface
 
-The FastAPI application provides an interactive Swagger interface for testing all available API endpoints.
+The application provides an interactive interface for uploading PDF documents and asking questions.
 
-![Swagger UI](images/swagger-ui.png)
+![Streamlit UI](images/streamlit-home.png)
 
----
 
-## 2. Upload PDF
+### 2. PDF Upload & Processing
 
-Users can upload PDF documents through the `/upload` endpoint. The application automatically processes the document, generates embeddings, and updates the FAISS vector database.
+Users can upload PDF files. The system processes documents, creates embeddings, and stores them in FAISS vector database.
 
-![Upload PDF](images/upload-pdf.png)
+![PDF Upload](images/streamlit-upload.png)
 
----
 
-## 3. Ask Questions
+### 3. Document Question Answering
 
-Users can ask natural language questions related to the uploaded documents using the `/ask` endpoint.
+Users can ask natural language questions related to uploaded documents.
 
-![Question Request](images/question-request.png)
+![Question Asking](images/streamlit-question.png)
 
----
 
-## 4. RAG Response with Source Citation
+### 4. AI Generated Answer with Sources
 
-The system retrieves the most relevant document chunks, generates a grounded response using the LLM, and returns source citations including the filename and page number.
+The RAG pipeline retrieves relevant document chunks and generates grounded answers with source references.
 
-![RAG Response](images/rag-response.png)
+![Generated Answer](images/streamlit-answer.png)
 
 ---
 
