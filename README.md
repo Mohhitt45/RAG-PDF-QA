@@ -1,5 +1,12 @@
 # 📄 Retrieval-Augmented Generation (RAG) based PDF Question Answering System
 
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-green)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
+![FAISS](https://img.shields.io/badge/FAISS-VectorDB-red)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
 An end-to-end Retrieval-Augmented Generation (RAG) application that enables users to upload PDF documents and ask natural language questions. The system retrieves the most relevant document chunks using semantic search with FAISS and generates grounded answers using a locally hosted Llama 3.1 model via Ollama.
 
 ---
@@ -292,6 +299,42 @@ Return Answer + Source Citation
 - Multi-PDF Incremental Indexing
 - Dockerized Deployment
 - Production-ready FastAPI Backend
+
+---
+
+---
+
+# 📸 Application Demo
+
+## 1. Swagger UI
+
+The FastAPI application provides an interactive Swagger interface for testing all available API endpoints.
+
+![Swagger UI](images/swagger-ui.png)
+
+---
+
+## 2. Upload PDF
+
+Users can upload PDF documents through the `/upload` endpoint. The application automatically processes the document, generates embeddings, and updates the FAISS vector database.
+
+![Upload PDF](images/upload-pdf.png)
+
+---
+
+## 3. Ask Questions
+
+Users can ask natural language questions related to the uploaded documents using the `/ask` endpoint.
+
+![Question Request](images/question-request.png)
+
+---
+
+## 4. RAG Response with Source Citation
+
+The system retrieves the most relevant document chunks, generates a grounded response using the LLM, and returns source citations including the filename and page number.
+
+![RAG Response](images/rag-response.png)
 
 ---
 
