@@ -7,7 +7,9 @@
 ![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-An end-to-end Retrieval-Augmented Generation (RAG) application that enables users to upload PDF documents and ask natural language questions. The system retrieves the most relevant document chunks using semantic search with FAISS and generates grounded answers using a locally hosted Llama 3.1 model via Ollama.
+> **Note:** This project is intended for local execution. A complete local demo (FastAPI + Streamlit) is provided. Cloud deployment was evaluated but limited by free-tier infrastructure constraints.
+
+An end-to-end Retrieval-Augmented Generation (RAG) application that enables users to upload PDF documents and ask natural language questions. The system retrieves the most relevant document chunks using semantic search with FAISS and generates grounded answers using Hugging Face hosted Large Language Models (LLMs).
 
 ---
 
@@ -17,7 +19,7 @@ An end-to-end Retrieval-Augmented Generation (RAG) application that enables user
 - ✂️ Automatic document chunking using Recursive Character Text Splitter
 - 🧠 Semantic embeddings using HuggingFace Sentence Transformers
 - 🔍 FAISS Vector Database for efficient similarity search
-- 🤖 Local LLM inference using Ollama (Llama 3.1)
+- 🤖 Answer generation using Hugging Face LLM
 - 💬 Retrieval-Augmented Generation (RAG) pipeline
 - 📚 Source citation with PDF filename and page number
 - 📑 Incremental indexing for multiple PDF documents
@@ -57,7 +59,7 @@ An end-to-end Retrieval-Augmented Generation (RAG) application that enables user
           Prompt Engineering
                    │
                    ▼
-        Ollama (Llama 3.1)
+        Hugging Face LLM
                    │
                    ▼
       Answer + Source Citations
@@ -71,7 +73,7 @@ An end-to-end Retrieval-Augmented Generation (RAG) application that enables user
 |----------|--------------|
 | Language | Python |
 | Framework | FastAPI |
-| LLM | Ollama (Llama 3.1) |
+| LLM | Hugging Face Inference API |
 | AI Framework | LangChain |
 | Embeddings | HuggingFace Sentence Transformers |
 | Vector Database | FAISS |
@@ -111,7 +113,7 @@ RAG-PDF-QA
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/RAG-PDF-QA.git
+git clone https://github.com/Mohhitt45/RAG-PDF-QA.git
 
 cd RAG-PDF-QA
 ```
@@ -138,34 +140,6 @@ venv\Scripts\activate
 
 ```bash
 pip install -r requirements.txt
-```
-
----
-
-## Start Ollama
-
-```bash
-ollama serve
-```
-
-Pull model (first time only)
-
-```bash
-ollama pull llama3.1
-```
-
----
-
-## Run FastAPI
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Open
-
-```
-http://127.0.0.1:8000/docs
 ```
 
 ---
@@ -281,7 +255,7 @@ Retrieve Relevant Chunks
 
 ↓
 
-Generate Answer using Llama 3.1
+Generate Answer using Hugging Face LLM
 
 ↓
 
@@ -342,7 +316,7 @@ The RAG pipeline retrieves relevant document chunks and generates grounded answe
 - Hybrid Search (BM25 + Vector Search)
 - Authentication & User Management
 - Streaming Responses
-- Cloud Deployment
+- Cloud Deployment (using scalable GPU-enabled infrastructure)
 - Support for DOCX, TXT and CSV documents
 - Reranking for improved retrieval accuracy
 
@@ -350,40 +324,14 @@ The RAG pipeline retrieves relevant document chunks and generates grounded answe
 
 ## 🚀 How to Run Locally
 
-### 1. Clone the Repository
 
-```bash
-git clone https://github.com/<your-username>/RAG-PDF-QA.git
-cd RAG-PDF-QA
-```
-
-### 2. Create a Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-### 3. Activate the Virtual Environment
-
-**Windows**
-
-```bash
-venv\Scripts\activate
-```
-
-### 4. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Create a `.env` File
+### 1. Create a `.env` File
 
 ```env
 HF_TOKEN=your_huggingface_token
 ```
 
-### 6. Start the FastAPI Backend
+### 2. Start the FastAPI Backend
 
 ```bash
 uvicorn app.main:app --reload
@@ -395,7 +343,7 @@ Backend will run at:
 http://127.0.0.1:8000
 ```
 
-### 7. Start the Streamlit Frontend
+### 3. Start the Streamlit Frontend
 
 Open another terminal and run:
 
@@ -409,7 +357,7 @@ Frontend will run at:
 http://localhost:8501
 ```
 
-### 8. Upload a PDF
+### 4. Upload a PDF
 
 - Upload any PDF document.
 - Wait for indexing to complete.
