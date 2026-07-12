@@ -348,6 +348,80 @@ The RAG pipeline retrieves relevant document chunks and generates grounded answe
 
 ---
 
+## 🚀 How to Run Locally
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/RAG-PDF-QA.git
+cd RAG-PDF-QA
+```
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### 3. Activate the Virtual Environment
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+### 4. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Create a `.env` File
+
+```env
+HF_TOKEN=your_huggingface_token
+```
+
+### 6. Start the FastAPI Backend
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Backend will run at:
+
+```
+http://127.0.0.1:8000
+```
+
+### 7. Start the Streamlit Frontend
+
+Open another terminal and run:
+
+```bash
+streamlit run frontend.py
+```
+
+Frontend will run at:
+
+```
+http://localhost:8501
+```
+
+### 8. Upload a PDF
+
+- Upload any PDF document.
+- Wait for indexing to complete.
+- Ask questions related to the uploaded document.
+- The system retrieves relevant content using FAISS and generates answers using a Hugging Face LLM.
+
+## 📝 Note
+
+This project is designed to run locally.
+
+The application was successfully tested using a local FastAPI backend and Streamlit frontend. Cloud deployment was evaluated, but free-tier hosting platforms encountered memory limitations for the AI stack used in this project.
+
 # 👨‍💻 Author
 
 **Mohit Agrawal**
