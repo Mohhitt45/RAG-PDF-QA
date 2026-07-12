@@ -1,6 +1,9 @@
-from langchain_huggingface import HuggingFaceEmbeddings
+import os
+
+from dotenv import load_dotenv
+
+from langchain_huggingface import HuggingFaceEmbeddings, ChatHuggingFace, HuggingFaceEndpoint
 from langchain_community.vectorstores import FAISS
-from langchain_ollama import OllamaLLM
 from langchain_core.prompts import PromptTemplate
 
 from app.config import (
@@ -8,6 +11,8 @@ from app.config import (
     LLM_MODEL,
     TOP_K
 )
+
+load_dotenv()
 
 # Load embedding model
 embeddings = HuggingFaceEmbeddings(
@@ -27,9 +32,17 @@ retriever = vectorstore.as_retriever(
 )
 
 # Load Local LLM
-llm = OllamaLLM(
-    model=LLM_MODEL
+llm_endpoint = HuggingFaceEndpoint(
+    repo_id="meta-llama/Llama-3.1-8B-Instruct",
+    huggingfacehub_api_token=os.environ["HF_TOKEN"],
+    temperature=0.2,
+    max_new_tokens=512
 )
+
+llm = ChatHuggingFace(
+    llm=llm_endpoint
+)
+
 
 # Prompt Template
 prompt = PromptTemplate(
@@ -69,6 +82,7 @@ def ask_question(question: str):
             question=question
         )
     )
+    response = response.content
 
     # Collect source information
     sources = []

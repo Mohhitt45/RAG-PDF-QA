@@ -148,5 +148,4 @@ st.info("Sources will appear here.")
 st.caption(
     "Built with FastAPI • LangChain • FAISS • Ollama • Streamlit"
     
-    "@MohitAgrawal"
 )
