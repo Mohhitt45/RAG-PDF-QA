@@ -19,18 +19,6 @@ embeddings = HuggingFaceEmbeddings(
     model_name=EMBEDDING_MODEL
 )
 
-# Load FAISS database
-vectorstore = FAISS.load_local(
-    "vectorstore",
-    embeddings,
-    allow_dangerous_deserialization=True
-)
-
-# Create retriever
-retriever = vectorstore.as_retriever(
-    search_kwargs={"k": TOP_K}
-)
-
 # Load Local LLM
 llm_endpoint = HuggingFaceEndpoint(
     repo_id="meta-llama/Llama-3.1-8B-Instruct",
@@ -66,6 +54,16 @@ Answer:
 
 
 def ask_question(question: str):
+
+    vectorstore = FAISS.load_local(
+        "vectorstore",
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+
+    retriever = vectorstore.as_retriever(
+        search_kwargs={"k": TOP_K}
+    )
 
     # Retrieve relevant chunks
     docs = retriever.invoke(question)

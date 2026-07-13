@@ -17,7 +17,6 @@ from app.config import (
 )
 
 
-
 def upload_pdf(file: UploadFile):
 
     # Validate PDF
@@ -26,6 +25,12 @@ def upload_pdf(file: UploadFile):
             status_code=400,
             detail="Only PDF files are allowed."
         )
+
+    # -----------------------------
+    # Remove previous uploaded PDFs
+    # -----------------------------
+    if os.path.exists(UPLOAD_FOLDER):
+        shutil.rmtree(UPLOAD_FOLDER)
 
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -38,11 +43,15 @@ def upload_pdf(file: UploadFile):
     with open(pdf_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
+    # -----------------------------
     # Load PDF
+    # -----------------------------
     loader = PyPDFLoader(pdf_path)
     documents = loader.load()
 
-    # Split text
+    # -----------------------------
+    # Split into chunks
+    # -----------------------------
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP
@@ -50,37 +59,32 @@ def upload_pdf(file: UploadFile):
 
     chunks = splitter.split_documents(documents)
 
+    # Add filename to metadata
     for chunk in chunks:
         chunk.metadata["source"] = file.filename
 
-    # Embeddings
+    # -----------------------------
+    # Load embedding model
+    # -----------------------------
     embeddings = HuggingFaceEmbeddings(
         model_name=EMBEDDING_MODEL
     )
 
-    # Create FAISS
-    #import os
+    # -----------------------------
+    # Delete old FAISS vectorstore
+    # -----------------------------
+    if os.path.exists(VECTORSTORE_FOLDER):
+        shutil.rmtree(VECTORSTORE_FOLDER)
 
-    faiss_index = os.path.join(VECTORSTORE_FOLDER, "index.faiss")
+    # -----------------------------
+    # Create new FAISS vectorstore
+    # -----------------------------
+    vectorstore = FAISS.from_documents(
+        chunks,
+        embeddings
+    )
 
-    if os.path.exists(faiss_index):
-
-
-        vectorstore = FAISS.load_local(
-            VECTORSTORE_FOLDER,
-            embeddings,
-            allow_dangerous_deserialization=True
-        )
-
-        vectorstore.add_documents(chunks)
-
-    else:
-
-        vectorstore = FAISS.from_documents(
-            chunks,
-            embeddings
-        )
-
+    # Save vectorstore
     vectorstore.save_local(VECTORSTORE_FOLDER)
 
     return {
